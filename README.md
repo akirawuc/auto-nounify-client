@@ -1,1 +1,0 @@
-# auto-nounify-client
