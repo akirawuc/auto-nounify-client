@@ -1,77 +1,44 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ConnectButton, getDefaultWallets} from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig, WagmiConfig, useAccount } from 'wagmi';
+import { mainnet, polygon, optimism } from 'wagmi/chains'
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import React, {useState} from 'react';
+import Upload from '../components/UploadButton';
+import dynamic from 'next/dynamic';
 
-const Upload = () => {
-  const [selectedFile, setSelectedFile] = useState();
-  const [imageSrc, setImageSrc] = useState(null);
+import "@rainbow-me/rainbowkit/styles.css";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
 
-  // Handle the upload
-  const handleUpload = event => {
-    setSelectedFile(event.target.files[0]);
-  };
+const { chains, publicClient } = configureChains(
+  [mainnet, polygon, optimism],
+  [
+    alchemyProvider({ apiKey: '2jMnGOXXyJ64NGMbgmlMMPkaZnaTeeiM' }),
+    publicProvider()
+  ]
+);
+console.log(publicClient)
 
-  // Handle the submit
-  const handleSubmit = async event => {
-    event.preventDefault();
+const { connectors } = getDefaultWallets({
+  appName: 'My RainbowKit App',
+  projectId: '2535c3721db1135963c87f1e589aa488',
+  chains
+});
 
-    // Create a FormData object
-    let formData = new FormData();
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient
+})
 
-    // Add the file to the FormData object
-    formData.append('file', selectedFile);
-
-    // Send the FormData object to the server, where the server is localhost:5000
-
-    const response = await fetch('http://127.0.0.1:5000/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (response.ok) {
-      console.log('Uploaded successfully!');
-      // Convert response to blob and create an object URL
-      const blob = await response.blob();
-      const imgUrl = URL.createObjectURL(blob);
-      // Set the image source state
-      setImageSrc(imgUrl);
-    } else {
-      console.error('Upload failed');
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleUpload} />
-        <button type="submit">Upload</button>
-      </form>
-      {/* Show image after successful upload */}
-      <br />
-    {imageSrc && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <img
-                src={imageSrc}
-                alt="Uploaded file"
-                style={{
-                  width: '50%', // or any other size you want
-                  height: 'auto', // maintain aspect ratio
-                  maxWidth: '2000px', // max width
-                  maxHeight: '2000px', // max height
-                }}
-              />
-              <a href={imageSrc} download="output.png" style={{ marginTop: '20px' }}>
-                <button>Save as file</button>
-              </a>
-            </div>
-          )}
-    </div>
-  );
-};
+const SendTransaction = dynamic(() => import('../components/SendTransaction'), { ssr: false });
+const RainbowKitProvider = dynamic(() => import('@rainbow-me/rainbowkit').then(mod => mod.RainbowKitProvider), { ssr: false });
 
 const Home: NextPage = () => {
+const { isConnected } = useAccount(); // Use the useAccount hook
+ // donate button
   return (
     <div className={styles.container}>
       <Head>
@@ -84,14 +51,19 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <ConnectButton />
 
+          <ConnectButton />
         <h1 className={styles.title}>
             Auto-Nounify your pictures!
         </h1>
         <Upload />
         <div className={styles.grid}>
         </div>
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider chains={chains}>
+{isConnected && <SendTransaction />} {/* Only display SendTransaction when the wallet is connected */}
+      </RainbowKitProvider>
+    </WagmiConfig>
       </main>
 
       <footer className={styles.footer}>
