@@ -1,13 +1,20 @@
 import React, {useState} from 'react';
 
+
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState();
   const [imageSrc, setImageSrc] = useState(null);
 
   // Handle the upload
-  const handleUpload = event => {
-    setSelectedFile(event.target.files[0]);
+const handleUpload = event => {
+  setSelectedFile(event.target.files[0]);
+  
+  const fileReader = new FileReader();
+  fileReader.readAsDataURL(event.target.files[0]);
+  fileReader.onload = (e) => {
+    setImageSrc(e.target.result);
   };
+};
 
   // Handle the submit
   const handleSubmit = async event => {
@@ -18,6 +25,8 @@ const Upload = () => {
 
     // Add the file to the FormData object
     formData.append('file', selectedFile);
+    
+      // show the uploaded image on the page
 
     // Send the FormData object to the server, where the server is localhost:5000
 
@@ -44,6 +53,8 @@ const Upload = () => {
         <input type="file" onChange={handleUpload} />
         <button type="submit">Upload</button>
       </form>
+
+
       {/* Show image after successful upload */}
       <br />
     {imageSrc && (
