@@ -48,7 +48,7 @@ const { isConnected } = useAccount(); // Use the useAccount hook
 
       <main className="flex flex-col items-center space-y-4 mt-12">
         <div className="w-full max-w-xl px-4">
-          <Upload className='w-full h-64 overflow-auto border border-gray-300 p-2 rounded'/>
+          <Upload className='w-full  overflow-auto p-2 rounded'/>
         </div>
 
       <RainbowKitProvider chains={chains}>
