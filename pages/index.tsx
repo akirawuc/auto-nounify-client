@@ -38,7 +38,7 @@ const { isConnected } = useAccount(); // Use the useAccount hook
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <header className="p-4 flex justify-end items-center bg-white w-full border-b">
+      <header >
           {/* <ConnectButton /> */}
       </header>
 
