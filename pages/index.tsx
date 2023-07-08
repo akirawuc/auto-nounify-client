@@ -39,7 +39,7 @@ const { isConnected } = useAccount(); // Use the useAccount hook
   return (
     <div className="min-h-screen flex flex-col justify-between">
       <header className="p-4 flex justify-end items-center bg-white w-full border-b">
-        <ConnectButton />
+          {/* <ConnectButton /> */}
       </header>
 
         <h1 className='absolute top-20 w-full text-center font-londrina text-[5rem]'>
@@ -50,11 +50,12 @@ const { isConnected } = useAccount(); // Use the useAccount hook
         <div className="w-full max-w-xl px-4">
           <Upload className='w-full h-64 overflow-auto border border-gray-300 p-2 rounded'/>
         </div>
+
+      <RainbowKitProvider chains={chains}>
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
-            {isConnected && <SendTransaction />} {/* Only display SendTransaction when the wallet is connected */}
-          </RainbowKitProvider>
+            {/*isConnected && <SendTransaction />*/} {/* Only display SendTransaction when the wallet is connected */}
         </WagmiConfig>
+      </RainbowKitProvider>
       </main>
 
       <footer className="p-4 border-t flex justify-center items-center">

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.11.0",
     "@rainbow-me/rainbowkit": "^1.0.2",
     "autoprefixer": "^10.4.14",
     "next": "^13.4.3",
