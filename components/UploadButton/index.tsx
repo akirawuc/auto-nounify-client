@@ -1,47 +1,44 @@
 import React, {useState} from 'react';
 
+// upload file to gcs
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState();
   const [imageSrc, setImageSrc] = useState(null);
+  const [nounify, setNounify] = useState(false);
 
-  // Handle the upload
-const handleUpload = event => {
-  setSelectedFile(event.target.files[0]);
-  
-  const fileReader = new FileReader();
-  fileReader.readAsDataURL(event.target.files[0]);
-  fileReader.onload = (e) => {
-    setImageSrc(e.target.result);
+  const handleUpload = event => {
+    setSelectedFile(event.target.files[0]);
+    
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(event.target.files[0]);
+    fileReader.onload = (e) => {
+      setImageSrc(e.target.result);
+    };
   };
-};
 
-  // Handle the submit
   const handleSubmit = async event => {
     event.preventDefault();
 
-    // Create a FormData object
+
     let formData = new FormData();
-
-    // Add the file to the FormData object
     formData.append('file', selectedFile);
+
     
-      // show the uploaded image on the page
-
-    // Send the FormData object to the server, where the server is localhost:5000
-
-    const response = await fetch('http://127.0.0.1:5000/api/upload', {
+    const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
       method: 'POST',
       body: formData,
+        header: new Headers({
+            'Content-Type': 'multipart/form-data'
+        }),
     });
 
     if (response.ok) {
       console.log('Uploaded successfully!');
-      // Convert response to blob and create an object URL
       const blob = await response.blob();
       const imgUrl = URL.createObjectURL(blob);
-      // Set the image source state
       setImageSrc(imgUrl);
+        setNounify(true);
     } else {
       console.error('Upload failed');
     }
@@ -49,32 +46,29 @@ const handleUpload = event => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" onChange={handleUpload} />
-        <button type="submit">Upload</button>
+      <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+        <div className="border border-gray-300 p-2 rounded">
+          <input type="file" onChange={handleUpload} />
+        </div>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button>
       </form>
 
-
-      {/* Show image after successful upload */}
-      <br />
-    {imageSrc && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <img
-                src={imageSrc}
-                alt="Uploaded file"
-                style={{
-                  width: '50%', // or any other size you want
-                  height: 'auto', // maintain aspect ratio
-                  maxWidth: '2000px', // max width
-                  maxHeight: '2000px', // max height
-                }}
-              />
-              <a href={imageSrc} download="output.png" style={{ marginTop: '20px' }}>
-                <button>Save as file</button>
-              </a>
-            </div>
-          )}
+      {imageSrc && (
+        <div className="mt-6 flex flex-col items-center">
+          <img
+            src={imageSrc}
+            alt="Uploaded file"
+            className="w-full max-w-lg max-h-lg object-contain"
+          />
+          { nounify && (
+          <a href={imageSrc} download="output.png" className="mt-4">
+            <button className="bg-blue-500 text-white p-2 rounded">Save as file</button>
+          </a>
+      )}
+        </div>
+      )}
     </div>
   );
 };
+
 export default Upload;

@@ -2,8 +2,6 @@ import { ConnectButton, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig, useAccount } from 'wagmi';
 import { mainnet, polygon, optimism } from 'wagmi/chains'
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
 import React, { useState } from 'react';
 import Upload from '../components/UploadButton';
 import dynamic from 'next/dynamic';
@@ -37,10 +35,10 @@ const RainbowKitProvider = dynamic(() => import('@rainbow-me/rainbowkit').then(m
 
 const Home: NextPage = () => {
 const { isConnected } = useAccount(); // Use the useAccount hook
- // donate button
+
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <header className="p-4 flex justify-end items-center bg-white w-full">
+      <header className="p-4 flex justify-end items-center bg-white w-full border-b">
         <ConnectButton />
       </header>
 
@@ -49,8 +47,8 @@ const { isConnected } = useAccount(); // Use the useAccount hook
         </h1>
 
       <main className="flex flex-col items-center space-y-4 mt-12">
-        <Upload className='place-content-center h-64 overflow-auto'/>
-        <div className="w-full max-w-xl flex flex-wrap justify-center">
+        <div className="w-full max-w-xl px-4">
+          <Upload className='w-full h-64 overflow-auto border border-gray-300 p-2 rounded'/>
         </div>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
