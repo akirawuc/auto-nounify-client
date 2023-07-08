@@ -20,7 +20,7 @@ const [debouncedTo] = useDebounce(to, 500)
 
   const { config } = usePrepareSendTransaction({
       to: debouncedTo,
-      value: debouncedAmount ? utils.parseEther(debouncedAmount) : undefined,
+      value: debouncedAmount ? BigInt(utils.parseEther(debouncedAmount).toString()) : undefined,
   })
   // console.log('usePrepareSendTransaction config:', config); // Log the output of usePrepareSendTransaction
 

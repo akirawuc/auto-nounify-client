@@ -2,24 +2,31 @@ import React, {useState} from 'react';
 
 // upload file to gcs
 
-const Upload = () => {
-  const [selectedFile, setSelectedFile] = useState();
-  const [imageSrc, setImageSrc] = useState(null);
+type UploadProps ={
+    className?: string;
+}
+const Upload: React.FC<UploadProps> = ({className}) => {
+    const [selectedFile, setSelectedFile] = useState<File | undefined>();
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [nounify, setNounify] = useState(false);
 
-  const handleUpload = event => {
+    const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
     setSelectedFile(event.target.files[0]);
     
     const fileReader = new FileReader();
     fileReader.readAsDataURL(event.target.files[0]);
     fileReader.onload = (e) => {
-      setImageSrc(e.target.result);
+        if (e.target){
+      setImageSrc(e.target.result as string);
+        }
     };
+        }
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+      if (selectedFile){
 
     let formData = new FormData();
     formData.append('file', selectedFile);
@@ -28,9 +35,6 @@ const Upload = () => {
     const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
       method: 'POST',
       body: formData,
-        header: new Headers({
-            'Content-Type': 'multipart/form-data'
-        }),
     });
 
     if (response.ok) {
@@ -42,10 +46,11 @@ const Upload = () => {
     } else {
       console.error('Upload failed');
     }
+      }
   };
 
   return (
-    <div>
+    <div className={className}>
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
         <div className="border border-gray-300 p-2 rounded">
           <input type="file" onChange={handleUpload} />
