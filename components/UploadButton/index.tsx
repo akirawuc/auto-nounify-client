@@ -11,6 +11,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [nounify, setNounify] = useState(false);
   const { address, connector, isConnected } = useAccount();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -27,6 +29,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setErrorMessage(null);  // Clear any previous error messages
+
     event.preventDefault();
       if (selectedFile){
 
@@ -47,9 +51,14 @@ const Upload: React.FC<UploadProps> = ({className}) => {
       const blob = await response.blob();
       const imgUrl = URL.createObjectURL(blob);
       setImageSrc(imgUrl);
-        setNounify(true);
+      setNounify(true);
+    }  else if (response.status === 403) {
+      // Quota exceeded
+      const data = await response.json();
+      setErrorMessage(data.error);  // Set error message
+      // You could set some state here to show an error message in your UI
     } else {
-      console.error('Upload failed');
+  setErrorMessage('Upload failed');  // Other errors
     }
       }
   };
@@ -63,6 +72,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
         { isConnected && (
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button> )}
       </form>
+
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
       {imageSrc && (
         <div className="mt-6 flex flex-col items-center">
