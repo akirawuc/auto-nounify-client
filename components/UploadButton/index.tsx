@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {  useAccount } from 'wagmi';
 
 // upload file to gcs
 
@@ -6,9 +7,12 @@ type UploadProps ={
     className?: string;
 }
 const Upload: React.FC<UploadProps> = ({className}) => {
-    const [selectedFile, setSelectedFile] = useState<File | undefined>();
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [nounify, setNounify] = useState(false);
+  const { address, connector, isConnected } = useAccount();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -25,6 +29,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setErrorMessage(null);  // Clear any previous error messages
+
     event.preventDefault();
       if (selectedFile){
 
@@ -32,8 +38,12 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     formData.append('file', selectedFile);
 
     
-    const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
+          if (address){
+  const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
       method: 'POST',
+        headers: {
+            'X-Wallet-Address': address,
+        },
       body: formData,
     });
 
@@ -42,21 +52,31 @@ const Upload: React.FC<UploadProps> = ({className}) => {
       const blob = await response.blob();
       const imgUrl = URL.createObjectURL(blob);
       setImageSrc(imgUrl);
-        setNounify(true);
+      setNounify(true);
+    }  else if (response.status === 403) {
+      // Quota exceeded
+      const data = await response.json();
+      setErrorMessage(data.error);  // Set error message
+      // You could set some state here to show an error message in your UI
     } else {
-      console.error('Upload failed');
+  setErrorMessage('Upload failed');  // Other errors
     }
+      }
       }
   };
 
   return (
     <div className={className}>
+    { isConnected && (
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
         <div className="border border-gray-300 p-2 rounded">
           <input type="file" onChange={handleUpload} />
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button> 
       </form>
+      )}
+
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
       {imageSrc && (
         <div className="mt-6 flex flex-col items-center">
