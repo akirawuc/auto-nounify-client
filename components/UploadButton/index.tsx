@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {  useAccount } from 'wagmi';
 
 // upload file to gcs
 
@@ -6,9 +7,10 @@ type UploadProps ={
     className?: string;
 }
 const Upload: React.FC<UploadProps> = ({className}) => {
-    const [selectedFile, setSelectedFile] = useState<File | undefined>();
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [nounify, setNounify] = useState(false);
+  const { address, connector, isConnected } = useAccount();
 
     const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -32,8 +34,11 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     formData.append('file', selectedFile);
 
     
-    const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
+          const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
       method: 'POST',
+        headers: {
+            'X-Wallet-Address': address,
+        },
       body: formData,
     });
 
