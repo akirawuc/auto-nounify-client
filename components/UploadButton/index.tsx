@@ -34,7 +34,7 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     formData.append('file', selectedFile);
 
     
-          const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
+  const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
       method: 'POST',
         headers: {
             'X-Wallet-Address': address,
@@ -60,7 +60,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
         <div className="border border-gray-300 p-2 rounded">
           <input type="file" onChange={handleUpload} />
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button>
+        { isConnected && (
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button> )}
       </form>
 
       {imageSrc && (

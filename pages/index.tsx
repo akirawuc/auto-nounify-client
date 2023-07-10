@@ -11,7 +11,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism],
+  [polygon, optimism],
   [
     alchemyProvider({ apiKey: '2jMnGOXXyJ64NGMbgmlMMPkaZnaTeeiM' }),
     publicProvider()
@@ -38,27 +38,28 @@ const { isConnected } = useAccount(); // Use the useAccount hook
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <header >
-          <ConnectButton />
+      <header className="p-4 flex justify-end items-center bg-white w-full">
+        <ConnectButton />
       </header>
 
         <h1 className='absolute top-20 w-full text-center font-londrina text-[5rem]'>
             Auto-Nounify your pictures!
         </h1>
-
-
-
-        <WagmiConfig config={wagmiConfig}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
       <main className="flex flex-col items-center space-y-4 mt-12">
         <div className="w-full max-w-xl px-4">
+            {!isConnected && (
+            <p className='text-center text-2xl font-londrina'>
+                Connect your wallet to nounify!
+            </p>)}
           <Upload className='w-full  overflow-auto p-2 rounded'/>
         </div>
 
             {/*isConnected && <SendTransaction />*/} {/* Only display SendTransaction when the wallet is connected */}
       </main>
       </RainbowKitProvider>
-                    </WagmiConfig>
+    </WagmiConfig>
 
 
 
