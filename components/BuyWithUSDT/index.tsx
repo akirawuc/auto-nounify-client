@@ -1,5 +1,5 @@
 import { useErc20BalanceOfRead, usePrepareErc20Transfer, useErc20Transfer } from '../../src/generated'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Address, useAccount, useNetwork, useWaitForTransaction } from 'wagmi'
 function PayWithUSDT() {
 const {data, isLoading, isSuccess, write} =  useErc20Transfer({
@@ -32,11 +32,14 @@ function ProcessingMessage({ hash }: { hash?: `0x${string}` }) {
 function Transfer() {
   const [address, setAddress] = useState('0xEee968e1499655F36E0b059f2AcC114Bc8BBFcF9' as Address)
   const [amount, setAmount] = useState('')
+    const [isIncreased, setIsIncreased] = useState(false);
+    const [isPosted, setIsPosted] = useState(false); // New state variable
+
 
   const { config, error, isError } = usePrepareErc20Transfer({
     address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F' as Address,
-    args: address && amount ? [address, BigInt(amount)] : undefined,
-    enabled: Boolean(address && amount),
+    args: address && amount ? [address, BigInt(amount*100000)] : undefined,
+    enabled: Boolean(address && amount*100000),
   })
   const { data, write } = useErc20Transfer(config)
 
@@ -45,15 +48,24 @@ function Transfer() {
   })
 
     // If success, post the transaction hash to the server
-    if (isSuccess) {
-        fetch('/api/transfer', {
+    // prevent multiple posts by checking isSuccess
+      useEffect(() => {
+        if (isSuccess && !isPosted) {
+          fetch('http://localhost:8080', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ hash: data?.hash }),
-        })
-    }
+            body: JSON.stringify({ transactionHash: data?.hash }),
+          })
+            .then(() => {
+              setIsPosted(true); // Mark the transaction as posted
+            })
+            .catch((error) => {
+              console.error('Failed to post transaction:', error);
+            });
+        }
+      }, [isSuccess, isPosted, data]);
 
 
   return (
