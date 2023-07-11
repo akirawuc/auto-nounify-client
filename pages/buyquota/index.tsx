@@ -4,8 +4,8 @@ import { mainnet, polygon, optimism } from 'wagmi/chains'
 import type { NextPage } from 'next';
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-
-import  Transfer from '../../components/BuyWithUSDT';
+import PageHeader from '../../components/header';
+import  PayWithUSDT from '../../components/BuyWithUSDT';
 import "@rainbow-me/rainbowkit/styles.css";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -38,9 +38,7 @@ const { isConnected } = useAccount(); // Use the useAccount hook
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <header className="p-4 flex justify-end items-center bg-white w-full">
-        <ConnectButton />
-      </header>
+        <PageHeader />
 
         <h1 className='absolute top-20 w-full text-center font-londrina text-[5rem]'>
             How to get quota?
@@ -48,13 +46,12 @@ const { isConnected } = useAccount(); // Use the useAccount hook
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
               <main className="flex flex-col items-center space-y-4 mt-12">
-                <div className="w-full max-w-xl px-4">
-                    {!isConnected && (
-                    <p className='text-center text-2xl font-londrina'>
-                        Connect your wallet to nounify!
-                    </p>)}
+                <div className="w-full max-w-xl px-4 font-londrina">
+                    1. Become a contributor at Nouns running club @nounsrc
+                    <br />
+                    2. Purchase quota from below ( 1 USDT for 1 picture ) 
                 </div>
-            {isConnected && <Transfer />} {/* Only display SendTransaction when the wallet is connected */}
+                {isConnected && <PayWithUSDT />} {/* Only display SendTransaction when the wallet is connected */}
               </main>
           </RainbowKitProvider>
         </WagmiConfig>
