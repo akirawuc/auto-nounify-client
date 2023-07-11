@@ -24,8 +24,8 @@ function PayWithUSDT() {
 
   const { config, error, isError } = usePrepareErc20Transfer({
     address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F' as Address,
-    args: address && amount ? [address, BigInt(amount*100000)] : undefined,
-    enabled: Boolean(address && amount*100000),
+    args: address && amount ? [address, BigInt(amount*1000000)] : undefined,
+    enabled: Boolean(address && amount*1000000),
   })
   const { data, write } = useErc20Transfer(config)
 
@@ -37,7 +37,7 @@ function PayWithUSDT() {
     // prevent multiple posts by checking isSuccess
       useEffect(() => {
         if (isSuccess && !isPosted) {
-          fetch('http://localhost:8080', {
+          fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/decode_add_quota', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
