@@ -1,4 +1,5 @@
-import { useErc20BalanceOfRead, usePrepareErc20Transfer, useErc20Transfer } from '../../src/generated'
+import { usePrepareErc20Transfer, useErc20Transfer } from '../../src/generated'
+import {BaseError} from 'viem';
 import React, { useState, useEffect } from 'react';
 import { Address, useAccount, useNetwork, useWaitForTransaction } from 'wagmi'
 
@@ -24,8 +25,8 @@ function PayWithUSDT() {
 
   const { config, error, isError } = usePrepareErc20Transfer({
     address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F' as Address,
-    args: address && amount ? [address, BigInt(amount*1000000)] : undefined,
-    enabled: Boolean(address && amount*1000000),
+    args: address && amount ? [address, BigInt(Number(amount)*1000000)] : undefined,
+    enabled: Boolean(address && Number(amount)*1000000),
   })
   const { data, write } = useErc20Transfer(config)
 
