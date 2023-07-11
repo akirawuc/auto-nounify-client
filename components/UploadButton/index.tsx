@@ -67,14 +67,12 @@ const Upload: React.FC<UploadProps> = ({className}) => {
 
   return (
     <div className={className}>
-    { isConnected && (
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
         <div className="border border-gray-300 p-2 rounded">
           <input type="file" onChange={handleUpload} />
         </div>
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">Nounify!</button> 
       </form>
-      )}
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
