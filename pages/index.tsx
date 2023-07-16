@@ -8,29 +8,8 @@ import dynamic from 'next/dynamic';
 import PageHeader from '../components/header';
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
 import Link from 'next/link';
 
-const { chains, publicClient } = configureChains(
-  [polygon, optimism],
-  [
-    alchemyProvider({ apiKey: '2jMnGOXXyJ64NGMbgmlMMPkaZnaTeeiM' }),
-    publicProvider()
-  ]
-);
-
-const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
-  projectId: '2535c3721db1135963c87f1e589aa488',
-  chains
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient
-})
 
 
 function Header() {
@@ -66,8 +45,6 @@ const { isConnected } = useAccount(); // Use the useAccount hook
     <h1 className='absolute top-20 w-full text-center font-londrina text-[5rem]'>
         Auto-Nounify your pictures!
     </h1>
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
           <main className="flex flex-col items-center space-y-4 mt-12">
             <div className="w-full max-w-xl px-4">
                 {!isConnected && (
@@ -80,9 +57,6 @@ const { isConnected } = useAccount(); // Use the useAccount hook
 
                 {/*isConnected && <SendTransaction />*/} {/* Only display SendTransaction when the wallet is connected */}
           </main>
-      </RainbowKitProvider>
-    </WagmiConfig>
-
 
 
       <footer className="p-4 border-t flex justify-center items-center">
