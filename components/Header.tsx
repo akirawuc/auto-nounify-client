@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ConnectButton, getDefaultWallets } from '@rainbow-me/rainbowkit';
 
-function PageHeader() {
+export  function PageHeader() {
   return (
   <header className="p-4 flex justify-end items-center bg-white w-full">
     <nav style={{ display: 'flex', justifyContent: 'center'}}>
@@ -10,7 +10,7 @@ function PageHeader() {
             <Link href="/"> Nounify </Link>
           </li>
           <li style={{ margin: '0 10px' , border: '1px solid #ccc', borderRadius: '10px', padding: '10px' }}>
-            <Link href="/buyquota">Buy some quota</Link>
+            <Link href="/donate">Donation</Link>
           </li>
         </ul>
       </nav>
@@ -19,5 +19,3 @@ function PageHeader() {
     </header>
   );
 }
-
-export default PageHeader;

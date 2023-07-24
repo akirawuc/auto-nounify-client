@@ -7,7 +7,7 @@ import {
 } from 'wagmi'
 import { utils } from 'ethers'
 
-export default function SendTransaction() {
+export default function DonateETH() {
   const [to, setTo] = React.useState('0xca84541D8B8Bf50fd8b042aCFd28B1e390703E20')
 
 const [debouncedTo] = useDebounce(to, 500)
@@ -38,19 +38,20 @@ const [debouncedTo] = useDebounce(to, 500)
         e.preventDefault()
         sendTransaction?.()
       }}
+     className='font-londrina'
     >
+    Donate:{' '}
       <input
-        aria-label="Amount (ether)"
         onChange={(e) => setAmount(e.target.value)}
         placeholder="0.05"
         value={amount}
       />
-      <button disabled={isLoading || !sendTransaction || !to || !amount}>
+      <button disabled={isLoading || !sendTransaction || !to || !amount} className='bg-blue-500 text-white p-2 rounded'>
         {isLoading ? 'Sending...' : 'Send'}
       </button>
       {isSuccess && (
         <div>
-          Successfully sent {amount} ether to {to}
+          Successfully donated {amount} ether, thank you!
           <div>
             <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
           </div>
