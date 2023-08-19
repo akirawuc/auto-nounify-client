@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {  useAccount } from 'wagmi';
 
-// upload file to gcs
-
 type UploadProps ={
     className?: string;
 }
@@ -66,7 +64,7 @@ const Upload: React.FC<UploadProps> = ({className}) => {
   };
 
   return (
-    <div className={className}>
+     <div className={className + " flex flex-col items-center"}>
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
         <div className="border border-gray-300 p-2 rounded">
           <input type="file" onChange={handleUpload} />

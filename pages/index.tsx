@@ -8,15 +8,13 @@ const Home: NextPage = () => {
 
   return (
       <>
+        <div className="flex flex-col items-center justify-center">
         <h1 className='text-center font-londrina text-[5rem] mb-12'>
             Auto-Nounify your pictures!
         </h1>
-<section className="flex flex-col items-center justify-center min-h-screen pt-0 mt-[-100px]">
-        <div>
-              <Upload className='w-full  overflow-auto p-2 rounded'/>
-        </div>
-      </section>
-  </>
+          <Upload className="justify-center"/>
+    </div>
+      </>
   );
 };
 
