@@ -1,29 +1,31 @@
-This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](https://github.com/rainbow-me/rainbowkit/tree/main/packages/create-rainbowkit).
+# Auto-Nounify
 
-## Getting Started
+Auto-Nounify is a tool developed using the poetry package, designed to simplify the process of adding "noggles" to pictures.
 
-First, run the development server:
+## Introduction
 
-```bash
-npm run dev
-```
+Auto-Nounify provides an easy and automated solution for adding noggles to pictures. Whether you want to enhance your images with a touch of whimsy, incorporate a particular cultural symbol, or simply have fun with visual modifications, this tool allows you to nounify your pictures with ease.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- Automatic Nounification: Auto-Nounify automates the process of adding noggles to pictures. It saves time and enables users to incorporate their desired visual elements seamlessly.
 
-## Learn More
+## Installation
 
-To learn more about this stack, take a look at the following resources:
+To install and use Auto-Nounify, follow these steps:
 
-- [RainbowKit Documentation](https://rainbowkit.com) - Learn how to customize your wallet connection flow.
-- [wagmi Documentation](https://wagmi.sh) - Learn how to interact with Ethereum.
-- [Next.js Documentation](https://nextjs.org/docs) - Learn how to build a Next.js application.
+1. Clone the repository: `git clone https://github.com/akirawuc/auto-nounify.git`
+2. Navigate to the project directory: `cd auto-nounify`
+3. Install the required dependencies using poetry: `poetry install`
 
-You can check out [the RainbowKit GitHub repository](https://github.com/rainbow-me/rainbowkit) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. After installing the dependencies, you would need a service account from GCP, download the key file in json format, and specify the path to the key by `export GOOGLE_APPLICATION_CREDENTIAL="/path/to/the/key_file.json"`
+2. Run the following command to activate the virtual environment: `poetry shell`
+3. To nounify an image with noggles, you would need to replace the file path at line #85 and #86, more features to come (including inputing the file path and maybe a frontend)
+4. The tool will process the image and generate a nounified version with noggles.
+5. Enjoy your nounified picture!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Contributions to Auto-Nounify are welcome! If you find any issues or have suggestions for improvement, please feel free to open an issue or submit a pull request.
