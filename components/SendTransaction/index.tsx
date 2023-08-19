@@ -26,7 +26,7 @@ export default function DonateETH() {
   })
 
 return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center text-2xl">
         <form
           onSubmit={(e) => {
               e.preventDefault();
@@ -37,7 +37,7 @@ return (
           <span className="mr-2">Donate:</span>
           <input
             onChange={(e) => setAmount(e.target.value)}
-            placeholder="0.05"
+            placeholder="0.005 (ETH)"
             value={amount}
             className="p-2 border border-gray-300 rounded"
           />

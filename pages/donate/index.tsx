@@ -15,7 +15,7 @@ const Home: NextPage = () => {
 
     return (
         <div className="flex flex-col items-center pt-12">
-            <h1 className='text-center font-londrina text-[5rem] mb-12'>
+            <h1 className='text-center font-londrina text-[5rem] mb-36'>
                 Donate to support the project
             </h1>
             <DonateETH />
