@@ -6,6 +6,7 @@ type UploadProps ={
 }
 const Upload: React.FC<UploadProps> = ({className}) => {
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [uploading, setUploading] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [nounify, setNounify] = useState(false);
   const { address, connector, isConnected } = useAccount();
@@ -36,16 +37,18 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     formData.append('file', selectedFile);
 
     
-          if (address){
-  const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
-      method: 'POST',
-        headers: {
-            'X-Wallet-Address': address,
-        },
-      body: formData,
-    });
+  if (address){
+      setUploading(true);
+      const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
+          method: 'POST',
+            headers: {
+                'X-Wallet-Address': address,
+            },
+          body: formData,
+        });
 
     if (response.ok) {
+        setUploading(false);
       console.log('Uploaded successfully!');
       const blob = await response.blob();
       const imgUrl = URL.createObjectURL(blob);
@@ -73,8 +76,8 @@ const Upload: React.FC<UploadProps> = ({className}) => {
       </form>
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-
-      {imageSrc && (
+      {uploading && <div className="spinner mt-6"></div>}
+      {imageSrc && !uploading && (
         <div className="mt-6 flex flex-col items-center">
           <img
             src={imageSrc}
