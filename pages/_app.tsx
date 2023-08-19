@@ -1,4 +1,6 @@
 import '../styles/globals.css';
+import { Footer } from "../components/Footer";
+import {PageHeader} from '../components/Header';
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
@@ -31,7 +33,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <PageHeader />
+<main className="container mx-auto min-h-[calc(100vh-80px)] py-12">
+            <Component {...pageProps} />
+        </main>
+        <Footer />
       </RainbowKitProvider>
     </WagmiConfig>
   );
