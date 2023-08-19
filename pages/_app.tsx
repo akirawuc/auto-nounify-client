@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import { Footer } from "../components/Footer";
-import {PageHeader} from '../components/header';
+import {PageHeader} from '../components/Header';
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import type { AppProps } from 'next/app';
