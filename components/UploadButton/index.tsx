@@ -39,9 +39,6 @@ const Upload: React.FC<UploadProps> = ({className}) => {
       setUploading(true);
       const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
           method: 'POST',
-            headers: {
-                'X-Wallet-Address': address,
-            },
           body: formData,
         });
 
