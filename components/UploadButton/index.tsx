@@ -36,8 +36,6 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     let formData = new FormData();
     formData.append('file', selectedFile);
 
-    
-  if (address){
       setUploading(true);
       const response = await fetch('https://us-central1-fleet-surface-347907.cloudfunctions.net/add_noggles', {
           method: 'POST',
@@ -62,7 +60,6 @@ const Upload: React.FC<UploadProps> = ({className}) => {
     } else {
   setErrorMessage('Upload failed');  // Other errors
     }
-      }
       }
   };
 
